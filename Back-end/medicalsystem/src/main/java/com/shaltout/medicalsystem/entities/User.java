@@ -1,55 +1,60 @@
 package com.shaltout.medicalsystem.entities;
 
-import jakarta.persistence.*;
 import com.shaltout.medicalsystem.enums.Role;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "users")
-@Getter @Setter
-
-@NamedNativeQueries({
-        @NamedNativeQuery(
-                name = "User.findByUsernameNative",
-                query = "SELECT * FROM users WHERE username = :username",
-                resultClass = User.class
-        ),
-        @NamedNativeQuery(
-                name = "User.findByEmailNative",
-                query = "SELECT * FROM users WHERE email = :email",
-                resultClass = User.class
-        )
-})
-
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Username is required")
-    private String username;
+    @NotBlank
+    private String firstName;
 
-    @NotBlank(message = "Password is required")
-    private String password;
+    @NotBlank
+    private String lastName;
 
+    @NotBlank
+    private String userName;
+
+    @Column(unique = true)
     @Email
-    @NotBlank(message = "Email is required")
+    @Nullable
     private String email;
 
+    @NotBlank
+    private String password;
+
+    @NotBlank
+    private String phoneNumber;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "roles",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Role role;
-
-    private boolean enabled = true;
-
-    // Relationships (optional - if user links to doctor or patient)
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Doctor doctor;
+    private Set<Role> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Patient patient;
+    private Patient patientProfile;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Doctor doctorProfile;
 }
