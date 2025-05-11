@@ -77,4 +77,14 @@ public class MedicalRecordController {
         medicalRecordService.deleteMedicalRecord(id);
         return ResponseEntity.noContent().build();
     }
+    @Operation(summary = "Get medical records by patient ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of medical records retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "No medical records found for the given patient ID")
+    })
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<MedicalRecordResponse>> getMedicalRecordsByPatientId(@PathVariable Long patientId) {
+        List<MedicalRecordResponse> records = medicalRecordService.getMedicalRecordsByPatientId(patientId);
+        return ResponseEntity.ok(records);
+    }
 }

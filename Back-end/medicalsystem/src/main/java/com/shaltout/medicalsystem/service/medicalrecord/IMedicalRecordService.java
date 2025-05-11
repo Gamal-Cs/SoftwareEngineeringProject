@@ -11,4 +11,6 @@ public interface IMedicalRecordService {
     MedicalRecordResponse getMedicalRecordById(Long id);
     MedicalRecordResponse updateMedicalRecord(Long id, MedicalRecordRequest request);
     void deleteMedicalRecord(Long id);
+
+    List<MedicalRecordResponse> getMedicalRecordsByPatientId(Long patientId);
 }

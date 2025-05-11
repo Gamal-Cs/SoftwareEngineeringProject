@@ -10,4 +10,6 @@ public interface IPaymentService {
     List<PaymentResponse> getAllPayments();
     PaymentResponse getPaymentById(Long id);
     PaymentResponse updatePayment(Long id, PaymentRequest request);
+
+    List<PaymentResponse> getPaymentsByPatientId(Long patientId);
 }

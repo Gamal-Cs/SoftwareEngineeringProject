@@ -88,6 +88,26 @@ public class AppointmentService implements IAppointmentService {
         appointmentRepository.delete(appointment);
     }
 
+    @Override
+    public List<AppointmentResponse> getAppointmentsByPatientId(Long patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient", "id", patientId));
+        return appointmentRepository.findByPatient(patient)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentResponse> getAppointmentsByDoctorId(Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor", "id", doctorId));
+        return appointmentRepository.findByDoctor(doctor)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     private AppointmentResponse mapToResponse(Appointment appointment) {
         AppointmentResponse response = new AppointmentResponse();
         response.setId(appointment.getId());

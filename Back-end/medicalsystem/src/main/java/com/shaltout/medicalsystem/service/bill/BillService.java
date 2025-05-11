@@ -78,6 +78,16 @@ public class BillService implements IBillService {
         billRepository.delete(bill);
     }
 
+    @Override
+    public List<BillResponse> getBillsByPatientId(Long patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient", "id", patientId));
+        return billRepository.findByPatient(patient)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     private BillResponse mapToResponse(Bill bill) {
         BillResponse response = modelMapper.map(bill, BillResponse.class);
 

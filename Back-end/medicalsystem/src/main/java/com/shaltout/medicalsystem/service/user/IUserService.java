@@ -19,6 +19,5 @@ public interface IUserService {
 
     void deleteUser(Long id);
 
-    @Transactional
-    void upgradeUserRole(Long userId, Role roleName);
+    List<Role> getAllRoles();
 }

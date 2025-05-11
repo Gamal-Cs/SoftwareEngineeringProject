@@ -28,22 +28,3 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.email = :identifier OR u.phoneNumber = :identifier")
     boolean existsByEmailOrPhoneNumber(@Param("identifier") String identifier);
 }
-//
-//@Repository
-//public class UserRepository {
-//
-//    @Autowired
-//    private EntityManager entityManager;
-//
-//    public User findByUsername(String username) {
-//        return entityManager.createNamedQuery("User.findByUsernameNative", User.class)
-//                .setParameter("username", username)
-//                .getSingleResult();
-//    }
-//
-//    public User findByEmail(String email) {
-//        return entityManager.createNamedQuery("User.findByEmailNative", User.class)
-//                .setParameter("email", email)
-//                .getSingleResult();
-//    }
-//}

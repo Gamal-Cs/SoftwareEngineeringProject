@@ -59,12 +59,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authManager(AuthenticationConfiguration context) throws Exception {
-        AuthenticationManager authManager = context.getAuthenticationManager();
-        return authManager;
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
@@ -80,8 +74,8 @@ public class SecurityConfig {
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler)
                 )
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 }

@@ -45,4 +45,9 @@ public class PaymentController {
     public ResponseEntity<PaymentResponse> updatePayment(@PathVariable Long id, @Valid @RequestBody PaymentRequest request) {
         return ResponseEntity.ok(paymentService.updatePayment(id, request));
     }
+    @Operation(summary = "Get payments by patient ID")
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<PaymentResponse>> getPaymentsByPatientId(@PathVariable Long patientId) {
+        return ResponseEntity.ok(paymentService.getPaymentsByPatientId(patientId));
+    }
 }

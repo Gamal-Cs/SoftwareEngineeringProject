@@ -32,5 +32,5 @@ public class UserRequest {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private Role role;
 }

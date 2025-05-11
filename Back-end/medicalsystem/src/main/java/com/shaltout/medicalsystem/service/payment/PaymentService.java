@@ -76,6 +76,16 @@ public class PaymentService implements IPaymentService {
         return mapToResponse(updatedPayment);
     }
 
+    @Override
+    public List<PaymentResponse> getPaymentsByPatientId(Long patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient", "id", patientId));
+        return paymentRepository.findByPatient(patient)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     private PaymentResponse mapToResponse(Payment payment) {
         PaymentResponse response = modelMapper.map(payment, PaymentResponse.class);
         return response;

@@ -101,4 +101,34 @@ public class AppointmentController {
         appointmentService.deleteAppointment(id);
         return ResponseEntity.noContent().build();
     }
+    @Operation(
+            summary = "Get appointments by patient ID",
+            description = "Retrieve a list of appointments for a specific patient."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "List of appointments retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Patient not found")
+    })
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByPatientId(
+            @Parameter(description = "ID of the patient to retrieve appointments for", required = true)
+            @PathVariable Long patientId) {
+        List<AppointmentResponse> responses = appointmentService.getAppointmentsByPatientId(patientId);
+        return ResponseEntity.ok(responses);
+    }
+    @Operation(
+            summary = "Get appointments by doctor ID",
+            description = "Retrieve a list of appointments for a specific doctor."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "List of appointments retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Doctor not found")
+    })
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctorId(
+            @Parameter(description = "ID of the doctor to retrieve appointments for", required = true)
+            @PathVariable Long doctorId) {
+        List<AppointmentResponse> responses = appointmentService.getAppointmentsByDoctorId(doctorId);
+        return ResponseEntity.ok(responses);
+    }
 }

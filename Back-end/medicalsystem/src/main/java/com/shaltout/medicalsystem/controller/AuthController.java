@@ -3,6 +3,10 @@ package com.shaltout.medicalsystem.controller;
 import com.shaltout.medicalsystem.dtos.auth.AuthRequest;
 import com.shaltout.medicalsystem.dtos.auth.AuthResponse;
 import com.shaltout.medicalsystem.dtos.auth.RegisterRequest;
+import com.shaltout.medicalsystem.dtos.user.UserResponse;
+import com.shaltout.medicalsystem.entities.User;
+import com.shaltout.medicalsystem.security.CustomUserDetailsService;
+import com.shaltout.medicalsystem.security.UserPrincipal;
 import com.shaltout.medicalsystem.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,6 +15,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,8 +54,9 @@ public class AuthController {
         authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
     }
-    @GetMapping("/test")
-    public String getMessage() {
-        return "Hello from AuthController!";
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser() {
+        return ResponseEntity.ok(authService.getCurrentUser());
     }
 }

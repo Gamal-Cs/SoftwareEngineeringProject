@@ -33,19 +33,13 @@ public class UserService implements IUserService {
             throw new IllegalArgumentException("Username is already taken");
         }
 
-        // Map UserRequest to User entity
         User user = modelMapper.map(request, User.class);
 
-        // Encode password
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // Set roles
-        Set<Role> roles = request.getRoles();
-        user.setRoles(roles);
-
+        user.setRole(request.getRole());
         User saved = userRepository.save(user);
 
-        // Map User entity to UserResponse DTO
         return modelMapper.map(saved, UserResponse.class);
     }
 
@@ -76,9 +70,8 @@ public class UserService implements IUserService {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
 
-        if (request.getRoles() != null) {
-            Set<Role> roles = request.getRoles();
-            user.setRoles(roles);
+        if (request.getRole() != null) {
+            user.setRole(request.getRole());
         }
         User updated = userRepository.save(user);
         return modelMapper.map(updated, UserResponse.class);
@@ -91,15 +84,8 @@ public class UserService implements IUserService {
         userRepository.delete(user);
     }
 
-    @Transactional
     @Override
-    public void upgradeUserRole(Long userId, Role roleName) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!user.getRoles().contains(roleName)) {
-            user.getRoles().add(roleName);
-            userRepository.save(user);
-        }
+    public List<Role> getAllRoles() {
+        return List.of(Role.values());
     }
 }

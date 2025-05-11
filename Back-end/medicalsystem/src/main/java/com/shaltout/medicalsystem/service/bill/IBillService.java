@@ -16,4 +16,6 @@ public interface IBillService {
     BillResponse updateBill(Long id, BillRequest request);
 
     void deleteBill(Long id);
+
+    List<BillResponse> getBillsByPatientId(Long patientId);
 }

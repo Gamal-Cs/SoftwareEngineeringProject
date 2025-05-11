@@ -82,6 +82,16 @@ public class MedicalRecordService implements IMedicalRecordService {
         medicalRecordRepository.delete(record);
     }
 
+    @Override
+    public List<MedicalRecordResponse> getMedicalRecordsByPatientId(Long patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient", "id", patientId));
+        return medicalRecordRepository.findByPatient(patient)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     private MedicalRecordResponse mapToResponse(MedicalRecord record) {
         MedicalRecordResponse response = modelMapper.map(record, MedicalRecordResponse.class);
         return response;

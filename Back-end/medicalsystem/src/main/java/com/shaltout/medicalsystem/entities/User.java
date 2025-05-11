@@ -43,14 +43,9 @@ public class User {
     @NotBlank
     private String phoneNumber;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "roles",
-            joinColumns = @JoinColumn(name = "user_id")
-    )
-    @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles = new HashSet<>();
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Patient patientProfile;

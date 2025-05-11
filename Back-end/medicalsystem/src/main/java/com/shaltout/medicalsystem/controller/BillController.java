@@ -84,4 +84,16 @@ public class BillController {
         billService.deleteBill(id);
         return ResponseEntity.noContent().build();
     }
+    @Operation(summary = "Get bills by patient ID", description = "Retrieve all bills associated with a specific patient ID.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Bills found"),
+            @ApiResponse(responseCode = "404", description = "No bills found for the given patient ID")
+    })
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<BillResponse>> getBillsByPatientId(
+            @Parameter(description = "ID of the patient to retrieve bills for", required = true)
+            @PathVariable Long patientId) {
+        List<BillResponse> bills = billService.getBillsByPatientId(patientId);
+        return ResponseEntity.ok(bills);
+    }
 }

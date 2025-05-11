@@ -83,17 +83,10 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
-    @Operation(summary = "Upgrade user role")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User role upgraded successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid input")
-    })
-    @PutMapping("/upgrade-role")
-    public ResponseEntity<String> upgradeUserRole(
-            @RequestParam Long userId,
-            @RequestParam Role roleName) {
-        userService.upgradeUserRole(userId, roleName);
-        return ResponseEntity.ok("User role upgraded successfully");
+    @Operation(summary = "List all roles")
+    @ApiResponse(responseCode = "200", description = "List of roles retrieved")
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        return ResponseEntity.ok(userService.getAllRoles());
     }
 }
